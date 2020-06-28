@@ -1,0 +1,217 @@
+---
+title: "Sanity Report"
+author: Kyle Kimler
+date: June 28, 2020
+output:
+  html_document:
+    keep_md: true
+    toc: true
+    number_sections: false
+    toc_float: true
+---
+
+Introduction
+---------------
+
+Just testing out Seurat using the nasal polyp dataset from Jose's 2018 paper
+Allergic inflammatory response
+
+
+Chapter 1: Loading data to Seurat
+---------------
+
+Load libraries
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(Seurat)
+```
+
+```{r, warning=FALSE}
+umifile <- read.csv(file="500sampPandasGenePolyp.txt",header=TRUE,stringsAsFactors=FALSE)
+umidata <- umifile %>% remove_rownames %>% column_to_rownames(colnames(umifile)[1])
+
+#grep rownames to find genes of interest - in this example opsins
+umidata %>% filter(grepl("OPN1",row.names(umidata))) %>% rownames
+
+polyp <- CreateSeuratObject(umidata, project = "polyp_scRNAseq")
+
+#look at specific genes in the seurat object
+polyp[c("OPN1LW", "ROPN1", "ROPN1L"), 1:30]
+
+#use [[]] puts a new metadata column to the seurat object
+polyp[["percent.mt"]] <- PercentageFeatureSet(polyp, pattern = "^MT-")
+
+#look at metadata summaries of seurat object
+head(polyp@meta.data, 5)
+
+```
+
+```{r}
+#print violin plots of mitochondrial genes
+VlnPlot(polyp, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+
+#more QC comparisons
+plot1 <- FeatureScatter(polyp, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(polyp, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+```
+
+Chapter 2: Normalization
+---------------
+First, I'm following the seurat vignette and just using log transform normalization. I want to try Sanity later.
+
+```{r}
+polyp <- NormalizeData(polyp, normalization.method = "LogNormalize", scale.factor = 10000)
+```
+
+Next, we pick out the most variable genes from the dataset.
+```{r, warning=FALSE}
+
+polyp <- FindVariableFeatures(polyp, selection.method = "vst", nfeatures = 2000)
+
+#what are the top 10?
+top10 <- head(VariableFeatures(polyp), 10)
+
+#and plot those highly variable genes with and without labels
+plot1 <- VariableFeaturePlot(polyp)
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
+
+#remove legend from first plot and y-axis shit from second
+plot1 + theme(legend.position="none") + plot2 + theme(axis.text.y=element_blank())+ylab("") + scale_y_discrete(breaks=NULL)
+
+```
+
+Chapter 3: Data scaling and visualizing dimensionality reduction
+---------------
+
+Seurat uses a "ScaleData" function:
+  - shift the expression of each gene so that mean expression across cells is 0
+  - scale the expression of each gene, so that the variance across cells is 1
+
+```{r}
+all.genes <- rownames(polyp)
+polyp <- ScaleData(polyp, features = all.genes)
+
+```
+
+And next, let's perform PCA
+```{r}
+polyp <- RunPCA(polyp, features = VariableFeatures(object = polyp))
+
+```
+
+We can visualize PCA in several different ways
+
+First, let's look at the highest contributing genes to each component
+```{r}
+VizDimLoadings(polyp, dims = 1:5, reduction = "pca")
+```
+
+And we can look at the distribution of cells by the components we like
+```{r}
+DimPlot(polyp, reduction = "pca")
+```
+
+Or look at heatmaps for the biggest gene contributors across cells
+```{r}
+DimHeatmap(polyp, dims = 1, cells = 499, balanced = TRUE)
+```
+
+For any number of components
+```{r}
+DimHeatmap(polyp, dims = 1:9, cells = 499, balanced = TRUE)
+```
+
+Chapter 4: How many useful dimensions are in the dataset?
+-------------
+Seurat uses Macosko et al 2015 method of choosing number of important dimensions,
+where PCA is run many times on 1% of the dataset, like bootstrapping.
+```{r}
+#run the bootstrap
+polyp <- JackStraw(polyp, num.replicate = 100)
+#score the resulting dimensions
+polyp <- ScoreJackStraw(polyp, dims = 1:20)
+
+#and plot distribution of p-values for each component
+JackStrawPlot(polyp, dims = 1:20)
+
+#also create an elbow plot of the variance explained by each component
+ElbowPlot(polyp)
+```
+
+Hard to tell whether to cut off at 5 or at 13 so I'll try both.
+
+Chapter 5: Clustering the cells with UMAP and t-sne
+-------------
+
+```{r}
+polyp <- FindNeighbors(polyp, dims = 1:5)
+polyp <- FindClusters(polyp, resolution = 0.5)
+head(Idents(polyp), 5)
+
+```
+
+Plot~!
+```{r}
+polyp <- RunUMAP(polyp, dims = 1:5)
+DimPlot(polyp, reduction = "umap")
+```
+
+Looks bad with 5. Now with 13 components
+
+
+```{r}
+polyp <- FindNeighbors(polyp, dims = 1:13)
+polyp <- FindClusters(polyp, resolution = 0.5)
+head(Idents(polyp), 13)
+
+```
+
+Plot~!
+```{r}
+polyp <- RunUMAP(polyp, dims = 1:13)
+DimPlot(polyp, reduction = "umap")
+
+#to point out where your favorite genes are living
+FeaturePlot(polyp, features = c("OPN1LW", "ROPN1", "ROPN1L"))
+```
+
+Chapter 6: Finding biomarkers with Seurat
+------------
+
+Find markers for all of the cell types displayed in the UMAP
+```{r}
+
+polyp.markers <- FindAllMarkers(polyp, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+#print the best markers
+polyp.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_logFC)
+
+#put the gene names in a list
+polyp.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_logFC) -> test
+biomarkers <- unlist(as.list(test$gene))
+```
+
+```{r, warning=FALSE}
+#Display where those genes appear in the cell types of the UMAP
+FeaturePlot(polyp, features = biomarkers, pt.size=0.5, ncol=2)
+```
+
+Finally, display the presence of our biomarkers in cells of each cell type by heatmap
+```{r}
+top10 <- polyp.markers %>% group_by(cluster) %>% top_n(n = 10, wt = avg_logFC)
+DoHeatmap(polyp, features = top10$gene) + NoLegend()
+```
+
+
+```{r}
+DimPlot(polyp, reduction = "umap")
+
+```
+
+To save your end plot, run this:
+
+saveRDS(pbmc, file = "../output/pbmc_tutorial.rds")
+
+
+Till next time~
