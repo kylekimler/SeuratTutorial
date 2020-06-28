@@ -194,7 +194,7 @@ biomarkers <- unlist(as.list(test$gene))
 
 ```{r, warning=FALSE}
 #Display where those genes appear in the cell types of the UMAP
-FeaturePlot(polyp, features = biomarkers, pt.size=0.5, ncol=2)
+FeaturePlot(polyp, features = biomarkers, pt.size=0.5)
 ```
 
 Finally, display the presence of our biomarkers in cells of each cell type by heatmap

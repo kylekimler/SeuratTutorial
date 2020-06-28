@@ -301,19 +301,19 @@ polyp <- RunUMAP(polyp, dims = 1:5)
 ```
 
 ```
-## 14:45:31 UMAP embedding parameters a = 0.9922 b = 1.112
+## 15:08:31 UMAP embedding parameters a = 0.9922 b = 1.112
 ```
 
 ```
-## 14:45:31 Read 499 rows and found 5 numeric columns
+## 15:08:31 Read 499 rows and found 5 numeric columns
 ```
 
 ```
-## 14:45:31 Using Annoy for neighbor search, n_neighbors = 30
+## 15:08:31 Using Annoy for neighbor search, n_neighbors = 30
 ```
 
 ```
-## 14:45:31 Building Annoy index with metric = cosine, n_trees = 50
+## 15:08:31 Building Annoy index with metric = cosine, n_trees = 50
 ```
 
 ```
@@ -326,13 +326,13 @@ polyp <- RunUMAP(polyp, dims = 1:5)
 
 ```
 ## **************************************************|
-## 14:45:31 Writing NN index file to temp file /var/folders/5c/vpl08snd01q_n45nt4dpmw880000gn/T//RtmpR3PFob/file1c5558c3e47f
-## 14:45:31 Searching Annoy index using 1 thread, search_k = 3000
-## 14:45:32 Annoy recall = 100%
-## 14:45:32 Commencing smooth kNN distance calibration using 1 thread
-## 14:45:32 Initializing from normalized Laplacian + noise
-## 14:45:32 Commencing optimization for 500 epochs, with 19044 positive edges
-## 14:45:33 Optimization finished
+## 15:08:31 Writing NN index file to temp file /var/folders/5c/vpl08snd01q_n45nt4dpmw880000gn/T//RtmpJN1U7j/file1d3a6c4318cc
+## 15:08:31 Searching Annoy index using 1 thread, search_k = 3000
+## 15:08:31 Annoy recall = 100%
+## 15:08:32 Commencing smooth kNN distance calibration using 1 thread
+## 15:08:32 Initializing from normalized Laplacian + noise
+## 15:08:32 Commencing optimization for 500 epochs, with 19044 positive edges
+## 15:08:33 Optimization finished
 ```
 
 ```r
@@ -394,19 +394,19 @@ polyp <- RunUMAP(polyp, dims = 1:13)
 ```
 
 ```
-## 14:45:33 UMAP embedding parameters a = 0.9922 b = 1.112
+## 15:08:34 UMAP embedding parameters a = 0.9922 b = 1.112
 ```
 
 ```
-## 14:45:33 Read 499 rows and found 13 numeric columns
+## 15:08:34 Read 499 rows and found 13 numeric columns
 ```
 
 ```
-## 14:45:33 Using Annoy for neighbor search, n_neighbors = 30
+## 15:08:34 Using Annoy for neighbor search, n_neighbors = 30
 ```
 
 ```
-## 14:45:33 Building Annoy index with metric = cosine, n_trees = 50
+## 15:08:34 Building Annoy index with metric = cosine, n_trees = 50
 ```
 
 ```
@@ -419,13 +419,13 @@ polyp <- RunUMAP(polyp, dims = 1:13)
 
 ```
 ## **************************************************|
-## 14:45:34 Writing NN index file to temp file /var/folders/5c/vpl08snd01q_n45nt4dpmw880000gn/T//RtmpR3PFob/file1c55156d4ef5
-## 14:45:34 Searching Annoy index using 1 thread, search_k = 3000
-## 14:45:34 Annoy recall = 100%
-## 14:45:34 Commencing smooth kNN distance calibration using 1 thread
-## 14:45:34 Initializing from normalized Laplacian + noise
-## 14:45:34 Commencing optimization for 500 epochs, with 16632 positive edges
-## 14:45:35 Optimization finished
+## 15:08:34 Writing NN index file to temp file /var/folders/5c/vpl08snd01q_n45nt4dpmw880000gn/T//RtmpJN1U7j/file1d3a652ac1a4
+## 15:08:34 Searching Annoy index using 1 thread, search_k = 3000
+## 15:08:34 Annoy recall = 100%
+## 15:08:34 Commencing smooth kNN distance calibration using 1 thread
+## 15:08:35 Initializing from normalized Laplacian + noise
+## 15:08:35 Commencing optimization for 500 epochs, with 16632 positive edges
+## 15:08:35 Optimization finished
 ```
 
 ```r
@@ -523,7 +523,7 @@ biomarkers <- unlist(as.list(test$gene))
 
 ```r
 #Display where those genes appear in the cell types of the UMAP
-FeaturePlot(polyp, features = biomarkers, pt.size=0.5, ncol=2)
+FeaturePlot(polyp, features = biomarkers, pt.size=0.5)
 ```
 
 ![](SeuratGit_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
