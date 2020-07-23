@@ -101,7 +101,7 @@ print(plt2)
 ## Elapsed time: 2 seconds
 ```
 
-![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-1.png)<!-- -->![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
+![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-1.png)<!-- -->![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
 
 ```
 ## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
@@ -115,7 +115,7 @@ print(plt2)
 ## Elapsed time: 2 seconds
 ```
 
-![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-3.png)<!-- -->![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-4.png)<!-- -->
+![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-3.png)<!-- -->![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-4.png)<!-- -->
 
 ```
 ## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
@@ -129,7 +129,7 @@ print(plt2)
 ## Elapsed time: 2 seconds
 ```
 
-![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-5.png)<!-- -->![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-6.png)<!-- -->
+![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-5.png)<!-- -->![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-6.png)<!-- -->
 
 ```
 ## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
@@ -143,7 +143,7 @@ print(plt2)
 ## Elapsed time: 2 seconds
 ```
 
-![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-7.png)<!-- -->![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-8.png)<!-- -->
+![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-7.png)<!-- -->![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-8.png)<!-- -->
 
 ```
 ## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
@@ -157,4 +157,4 @@ print(plt2)
 ## Elapsed time: 3 seconds
 ```
 
-![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-9.png)<!-- -->![](UMAPvTsneDimsShort_files/figure-html/unnamed-chunk-1-10.png)<!-- -->
+![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-9.png)<!-- -->![](UMAPTsnePolypDims5s_files/figure-html/unnamed-chunk-1-10.png)<!-- -->
